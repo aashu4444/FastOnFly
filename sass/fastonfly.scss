@@ -1,0 +1,165 @@
+$colors: ("coral":coral, "purple":purple, "white":white);
+
+// Util classes
+.flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button[disabled]{
+    pointer-events: none;
+}
+
+button[disabled]::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.2);
+}
+
+// Gradient buttons
+@each $name, $value in $colors{
+    .gradient-btn-#{$name}{
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(to left, $value, darken($value, 10%), $value);
+        color: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        font-size: 1rem;
+        background-size: 200%;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        transition: 0.3s;
+        position: relative;
+
+        &.animate:hover{
+            background-position: right;
+            box-shadow: 0 0 10px $value;
+        }
+
+        &:active{
+            background:linear-gradient(to left, darken($value, 10%), darken($value, 10%), darken($value, 10%));;
+        }
+    }
+}
+
+// custom input
+@mixin floating-label-input-label-change(){
+    transform: translateY(-19px) !important;
+    font-size: 0.85rem !important;
+    opacity: 1 !important;
+}
+.floating-label-input-container{
+    position: relative !important;
+    @each $name, $value in $colors{
+    .floating-label-input{
+        background: transparent;
+        border: none;
+        padding-left: 0;
+        padding-bottom: 9px;
+        transition: 0.6s;
+        outline: none;
+        color:#fff;
+        width:100% !important;
+        &:focus ~ .floating-label-input-border::before{
+            width: 100%;
+        }
+        &:focus ~ .floating-label-input-border{
+            opacity:1;
+        }
+
+        /*&:focus ~ .floating-label-input-label{
+            @include floating-label-input-label-change();
+        }
+
+        */
+        &:not([data-value=""]):focus ~ .floating-label-input-label{
+            @include floating-label-input-label-change();
+        }
+
+
+        &:not(:focus):not([data-value=""]) ~ .floating-label-input-border::before{
+            width: 100% !important;
+        } 
+        &:not(:focus):not([data-value=""]) ~ .floating-label-input-label{
+            @include floating-label-input-label-change();
+        } 
+        
+    }
+
+
+    .floating-label-input-label{
+        position: absolute;
+        color:#fff;
+        pointer-events: none;
+        left:0;
+        transition: 0.2s;
+        opacity:0.6;
+        top:0;
+    }
+    
+    .floating-label-input-border{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #fff;
+        transition: 0.6s;
+        opacity:0.6;
+
+        &::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            background: #341f97;
+            height: 100%;
+            z-index: 2;
+            opacity: 1;
+            transition: 0.4s;
+        }
+    }
+    .floating-label-input-border.normal-color-#{$name}{
+        background:$value !important;
+    }
+    .floating-label-input-border.before-color-#{$name}::before{
+        background:$value !important;
+    }
+}
+}
+
+
+@for $i from 0 through 10{
+    .mb-#{$i}{
+        margin-bottom: #{$i + 0.4}rem;
+    }
+    .mt-#{$i}{
+        margin-top: #{$i + 0.4}rem;
+    }
+    .pt-#{$i}{
+        padding-top: #{$i + 0.4}rem;
+    }
+    .pb-#{$i}{
+        padding-bottom: #{$i + 0.4}rem;
+    }
+    .p-#{$i}{
+        padding: #{$i + 0.4}rem;
+    }
+    .fs-#{$i}{
+        font-size: #{$i + 0.4}rem;
+    }
+}
+
+
+@keyframes glow{
+    from{
+        text-shadow: 0 0 20px #fff;
+    }
+}
